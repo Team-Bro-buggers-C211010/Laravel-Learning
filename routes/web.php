@@ -15,13 +15,13 @@ Route::get('/jobs', function () {
     // $jobs = Job::with('employer')->get();
 
     // $jobs = Job::with('employer')->get();
-    
+
     // for add pagination
-    $jobs = Job::with('employer')->paginate(10);
+    $jobs = Job::with('employer')->latest()->paginate(10);
 
     return view('jobs.index', [
         'jobs' => $jobs
-    ]);    
+    ]);
 });
 
 Route::get('/jobs/create', function () {
@@ -29,14 +29,20 @@ Route::get('/jobs/create', function () {
 });
 
 Route::get('/jobs/{id}', function ($id) {
-    $job = Job::find( $id );
+    $job = Job::find($id);
     return view('jobs.show', [
         'job' => $job
     ]);
 });
 
 Route::post('/jobs', function () {
-    dd("hi from form submitted");
+    Job::create([
+        'title' => request('title'),
+        'salary' => request('salary'),
+        'employer_id' => 200
+    ]);
+
+    return redirect('/jobs');
 });
 
 

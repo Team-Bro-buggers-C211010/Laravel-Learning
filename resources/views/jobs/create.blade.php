@@ -4,6 +4,8 @@
     </x-slot:heading>
 
     <form method="POST" action="/jobs">
+        @csrf
+
         <div class="space-y-12">
             <div class="border-b border-gray-900/10 pb-12">
                 <h2 class="text-base/7 font-semibold text-gray-900">Create a new job</h2>
@@ -20,14 +22,14 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="sm:col-span-4">
-                    <label for="salary" class="block text-sm/6 font-medium text-gray-900">Salary</label>
-                    <div class="mt-2">
-                        <div
-                            class="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
-                            <input id="salary" type="text" name="salary" placeholder="$XX,XXX per year"
-                                class="block min-w-0 grow bg-white py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" />
+                    <div class="sm:col-span-4">
+                        <label for="salary" class="block text-sm/6 font-medium text-gray-900">Salary</label>
+                        <div class="mt-2">
+                            <div
+                                class="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
+                                <input id="salary" type="text" name="salary" placeholder="$XX,XXX per year"
+                                    class="block min-w-0 grow bg-white py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" />
+                            </div>
                         </div>
                     </div>
                 </div>
