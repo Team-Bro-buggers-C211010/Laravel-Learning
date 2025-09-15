@@ -17,17 +17,15 @@ Route::view('/contact', 'contact');
 // Route::delete('/jobs/{job}', [JobController::class, 'destroy']);
 
 // using controller group method
-
 Route::controller(JobController::class)->group(function () {
     Route::get('/jobs', 'index');
-    Route::get('/jobs/create', 'create');
+    Route::get('/jobs/create', 'create')->middleware('auth');
     Route::get('/jobs/{job}', 'show');
-    Route::post('/jobs', 'store');
-    Route::get('/jobs/{job}/edit', 'edit');
-    Route::patch('/jobs/{job}', 'update');
-    Route::delete('/jobs/{job}', 'destroy');
+    Route::post('/jobs', 'store')->middleware('auth');
+    Route::get('/jobs/{job}/edit', 'edit')->middleware('auth')->can('edit', 'job');
+    Route::patch('/jobs/{job}', 'update')->middleware('auth');
+    Route::delete('/jobs/{job}', 'destroy')->middleware('auth');
 });
-
 // group method end here
 
 // using resource method, it takes array as 2nd parameter where we can add except or only
@@ -48,6 +46,6 @@ Route::controller(JobController::class)->group(function () {
 Route::get('/register', [RegisteredUserController::class, 'create']);
 Route::post('/register', [RegisteredUserController::class, 'store']);
 
-Route::get('/login', [SessionController::class, 'create']);
+Route::get('/login', [SessionController::class, 'create'])->name('login');
 Route::post('/login', [SessionController::class, 'store']);
 Route::post('/logout', [SessionController::class, 'destroy']);
