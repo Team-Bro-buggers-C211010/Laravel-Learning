@@ -33,7 +33,8 @@ Route::get('/jobs/create', function () {
 //     ]);
 // });
 
-// route model binding -> to fetch the job by id automatically
+// route model binding -> to fetch the job by id (default) automatically.
+// also, we can use '/jobs/{job:slug}' to fetch the job by slug
 Route::get('/jobs/{job}', function (Job $job) {
     return view('jobs.show', [
         'job' => $job
