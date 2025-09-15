@@ -26,8 +26,15 @@ Route::get('/jobs/create', function () {
     return view('jobs.create');
 });
 
-Route::get('/jobs/{id}', function ($id) {
-    $job = Job::find($id);
+// Route::get('/jobs/{id}', function ($id) {
+//     $job = Job::find($id);
+//     return view('jobs.show', [
+//         'job' => $job
+//     ]);
+// });
+
+// route model binding -> to fetch the job by id automatically
+Route::get('/jobs/{job}', function (Job $job) {
     return view('jobs.show', [
         'job' => $job
     ]);
@@ -56,15 +63,46 @@ Route::post('/jobs', function () {
 });
 
 // edit page
-Route::get('/jobs/{id}/edit', function ($id) {
-    $job = Job::find($id);
+// Route::get('/jobs/{id}/edit', function ($id) {
+//     $job = Job::find($id);
+//     return view('jobs.edit', [
+//         'job' => $job
+//     ]);
+// });
+
+// route model binding for edit by id
+Route::get('/jobs/{job}/edit', function (Job $job) {
     return view('jobs.edit', [
         'job' => $job
     ]);
 });
 
 // update
-Route::patch('/jobs/{id}', function ($id) {
+// Route::patch('/jobs/{id}', function ($id) {
+//     // validation
+//     request()->validate([
+//         'title' => [
+//             'required',
+//             'min:3',
+//         ],
+//         'salary' => [
+//             'required',
+//         ]
+//     ]);
+
+//     // findOrFail will throw an exception if the job is not found
+//     $job = Job::findOrFail($id);
+
+//     $job->update([
+//         'title' => request('title'),
+//         'salary' => request('salary')
+//     ]);
+
+//     return redirect('/jobs/' . $id);
+// });
+
+// route model binding for update
+Route::patch('/jobs/{job}', function (Job $job) {
     // validation
     request()->validate([
         'title' => [
@@ -76,21 +114,25 @@ Route::patch('/jobs/{id}', function ($id) {
         ]
     ]);
 
-    // findOrFail will throw an exception if the job is not found
-    $job = Job::findOrFail($id);
-
     $job->update([
         'title' => request('title'),
         'salary' => request('salary')
     ]);
 
-    return redirect('/jobs/' . $id);
+    return redirect('/jobs/' . $job->id);
 });
 
 // destroy
-Route::delete('/jobs/{id}', function ($id) {
-    $job = Job::findOrFail($id);
+// Route::delete('/jobs/{id}', function ($id) {
+//     $job = Job::findOrFail($id);
 
+//     $job->delete();
+
+//     return redirect('/jobs');
+// });
+
+// route model binding for destroy
+Route::delete('/jobs/{job}', function (Job $job) {
     $job->delete();
 
     return redirect('/jobs');
