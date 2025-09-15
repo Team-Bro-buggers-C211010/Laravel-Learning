@@ -1,145 +1,44 @@
 <?php
 
-use App\Models\Job;
+use App\Http\Controllers\JobController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('home');
+Route::view('/', 'home');
+
+// Route::get('/jobs', [JobController::class, 'index']);
+// Route::get('/jobs/create', [JobController::class, 'create']);
+// Route::get('/jobs/{job}', [JobController::class, 'show']);
+// Route::post('/jobs', [JobController::class, 'store']);
+// Route::get('/jobs/{job}/edit', [JobController::class, 'edit']);
+// Route::patch('/jobs/{job}', [JobController::class, 'update']);
+// Route::delete('/jobs/{job}', [JobController::class, 'destroy']);
+
+// using controller group method
+
+Route::controller(JobController::class)->group(function () {
+    Route::get('/jobs', 'index');
+    Route::get('/jobs/create', 'create');
+    Route::get('/jobs/{job}', 'show');
+    Route::post('/jobs', 'store');
+    Route::get('/jobs/{job}/edit', 'edit');
+    Route::patch('/jobs/{job}', 'update');
+    Route::delete('/jobs/{job}', 'destroy');
 });
 
-Route::get('/jobs', function () {
-    // $jobs = Job::all();
-    // to solve the n+1 problem, we can use eager loading
-    // $jobs = Job::with('employer')->get();
+// group method end here
 
-    // $jobs = Job::with('employer')->get();
+// using resource method, it takes array as 2nd parameter where we can add except or only
 
-    // for add pagination
-    $jobs = Job::with('employer')->latest()->paginate(10);
+// Route::resource('jobs', JobController::class, [
+//     'only' => ['index', 'show']
+// ]);
 
-    return view('jobs.index', [
-        'jobs' => $jobs
-    ]);
-});
+// Route::resource('jobs', JobController::class, [
+//     'except' => ['index', 'show']
+// ]);
 
-Route::get('/jobs/create', function () {
-    return view('jobs.create');
-});
+// Route::resource('jobs', JobController::class)->only(['index', 'show']);
 
-// Route::get('/jobs/{id}', function ($id) {
-//     $job = Job::find($id);
-//     return view('jobs.show', [
-//         'job' => $job
-//     ]);
-// });
+// resource method end here
 
-// route model binding -> to fetch the job by id (default) automatically.
-// also, we can use '/jobs/{job:slug}' to fetch the job by slug
-Route::get('/jobs/{job}', function (Job $job) {
-    return view('jobs.show', [
-        'job' => $job
-    ]);
-});
-
-// store
-Route::post('/jobs', function () {
-    // validation
-    request()->validate([
-        'title' => [
-            'required',
-            'min:3',
-        ],
-        'salary' => [
-            'required',
-        ]
-    ]);
-
-    Job::create([
-        'title' => request('title'),
-        'salary' => request('salary'),
-        'employer_id' => 200
-    ]);
-
-    return redirect('/jobs');
-});
-
-// edit page
-// Route::get('/jobs/{id}/edit', function ($id) {
-//     $job = Job::find($id);
-//     return view('jobs.edit', [
-//         'job' => $job
-//     ]);
-// });
-
-// route model binding for edit by id
-Route::get('/jobs/{job}/edit', function (Job $job) {
-    return view('jobs.edit', [
-        'job' => $job
-    ]);
-});
-
-// update
-// Route::patch('/jobs/{id}', function ($id) {
-//     // validation
-//     request()->validate([
-//         'title' => [
-//             'required',
-//             'min:3',
-//         ],
-//         'salary' => [
-//             'required',
-//         ]
-//     ]);
-
-//     // findOrFail will throw an exception if the job is not found
-//     $job = Job::findOrFail($id);
-
-//     $job->update([
-//         'title' => request('title'),
-//         'salary' => request('salary')
-//     ]);
-
-//     return redirect('/jobs/' . $id);
-// });
-
-// route model binding for update
-Route::patch('/jobs/{job}', function (Job $job) {
-    // validation
-    request()->validate([
-        'title' => [
-            'required',
-            'min:3',
-        ],
-        'salary' => [
-            'required',
-        ]
-    ]);
-
-    $job->update([
-        'title' => request('title'),
-        'salary' => request('salary')
-    ]);
-
-    return redirect('/jobs/' . $job->id);
-});
-
-// destroy
-// Route::delete('/jobs/{id}', function ($id) {
-//     $job = Job::findOrFail($id);
-
-//     $job->delete();
-
-//     return redirect('/jobs');
-// });
-
-// route model binding for destroy
-Route::delete('/jobs/{job}', function (Job $job) {
-    $job->delete();
-
-    return redirect('/jobs');
-});
-
-
-Route::get('/contact', function () {
-    return view('contact');
-});
+Route::view('/contact', 'contact');
