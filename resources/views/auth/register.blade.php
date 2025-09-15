@@ -26,12 +26,12 @@
                     </x-form-field>
                     <x-form-field>
                         <x-form-label for="password">Password</x-form-label>
-                        <x-form-input id="password" name="password" required />
+                        <x-form-input id="password" name="password" type="password" required />
                         <x-form-error name="password" />
                     </x-form-field>
                     <x-form-field>
                         <x-form-label for="password_confirmation">Confirm Password</x-form-label>
-                        <x-form-input id="password_confirmation" name="password_confirmation" required />
+                        <x-form-input id="password_confirmation" name="password_confirmation" type="password" required />
                         <x-form-error name="password_confirmation" />
                     </x-form-field>
                 </div>
